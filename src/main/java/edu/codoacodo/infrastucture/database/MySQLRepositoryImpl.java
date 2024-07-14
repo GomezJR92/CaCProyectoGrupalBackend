@@ -5,6 +5,7 @@ import edu.codoacodo.domain.models.Usuario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MySQLRepositoryImpl implements IRepository {
@@ -36,4 +37,30 @@ public class MySQLRepositoryImpl implements IRepository {
         }
 
     }
+
+    @Override
+    public Usuario findByUsername(String username) {
+        String sql = "SELECT * FROM users WHERE username = ?";
+
+        try {
+            PreparedStatement preparador = this.conexion.prepareStatement(sql);
+            preparador.setString(1, username);
+
+            ResultSet tablaVirtual = preparador.executeQuery();
+
+            if(tablaVirtual.next()){
+                Usuario usuario = new Usuario();
+                usuario.setId(tablaVirtual.getInt("id"));
+                usuario.setUsername(tablaVirtual.getString("username"));
+                usuario.setPassword(tablaVirtual.getString("password"));
+                usuario.setEmail(tablaVirtual.getString("email"));
+                return usuario;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    
 }

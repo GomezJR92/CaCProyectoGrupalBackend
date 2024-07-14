@@ -30,4 +30,27 @@ public class UsuarioController extends HttpServlet {
 
 
     }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        String username = req.getParameter("username");
+
+        if (username != null){
+            Usuario usuario = service.findByUsername(username);
+            if (usuario!= null){
+                resp.setStatus(200);
+                resp.setContentType("application/json");
+                resp.setCharacterEncoding("UTF-8");
+
+                resp.getWriter().write(mapper.writeValueAsString(usuario));
+            }else {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                resp.getWriter().write("usuario no encontrado");
+            }
+        }
+    }
+
+
 }
+

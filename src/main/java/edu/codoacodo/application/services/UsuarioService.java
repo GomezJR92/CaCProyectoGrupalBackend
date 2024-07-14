@@ -13,4 +13,11 @@ public class UsuarioService implements IRepository {
 
         repository.saveUser(user);
     }
+
+    @Override
+    public Usuario findByUsername(String username) {
+        return repository.findByUsername(username);
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package edu.codoacodo.domain.models;
 
 public class Usuario {
+    private int id;
     private String username;
     private String password;
     private String email;
@@ -36,5 +37,13 @@ public class Usuario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
