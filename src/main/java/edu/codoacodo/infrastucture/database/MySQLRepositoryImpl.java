@@ -76,8 +76,21 @@ public class MySQLRepositoryImpl implements IRepository {
         }
     }
 
+    @Override
+    public void updateUser(int id, String username) {
+        String sql = "UPDATE users SET username = ? WHERE id = ?";
+
+        try {
+            PreparedStatement preparador = this.conexion.prepareStatement(sql);
+            preparador.setString(1, username);
+            preparador.setInt(2, id);
 
 
+            preparador.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 }

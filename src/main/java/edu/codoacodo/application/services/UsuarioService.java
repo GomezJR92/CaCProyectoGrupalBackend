@@ -8,6 +8,7 @@ public class UsuarioService implements IRepository {
 
     private final IRepository repository = new MySQLRepositoryImpl();
 
+
     @Override
     public void saveUser(Usuario user) {
 
@@ -22,6 +23,11 @@ public class UsuarioService implements IRepository {
     @Override
     public void deleteUser(int id) {
         repository.deleteUser(id);
+    }
+
+    @Override
+    public void updateUser(int id, String username) {
+        repository.updateUser(id, username);
     }
 
 

@@ -24,9 +24,9 @@ public class UsuarioController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-            Usuario usuario = mapper.readValue(req.getInputStream(), Usuario.class);
-            service.saveUser(usuario);
-            resp.setStatus(200);
+        Usuario usuario = mapper.readValue(req.getInputStream(), Usuario.class);
+        service.saveUser(usuario);
+        resp.setStatus(200);
 
 
     }
@@ -36,39 +36,59 @@ public class UsuarioController extends HttpServlet {
             throws ServletException, IOException {
         String username = req.getParameter("username");
 
-        if (username != null){
+        if (username != null) {
             Usuario usuario = service.findByUsername(username);
-            if (usuario!= null){
+            if (usuario != null) {
                 resp.setStatus(200);
                 resp.setContentType("application/json");
                 resp.setCharacterEncoding("UTF-8");
 
                 resp.getWriter().write(mapper.writeValueAsString(usuario));
-            }else {
+            } else {
                 resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 resp.getWriter().write("usuario no encontrado");
             }
         }
     }
 
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
-    }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String idString = req.getParameter("id");
 
-        if(idString != null && !idString.isEmpty()) {
+        if (idString != null && !idString.isEmpty()) {
             int id = Integer.parseInt(idString);
             service.deleteUser(id);
             resp.setStatus(200);
-        }else {
+        } else {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("ID DE USUARIO INVALIDO");
         }
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        String idString = req.getParameter("id");
+        String newUsername = req.getParameter("username");
+        if (idString != null && !idString.isEmpty() && newUsername != null && !newUsername.isEmpty()) {
+            int id = Integer.parseInt(idString);
+            Usuario usuario = usuarioService.findById(id);
+            if (usuario != null) {
+                usuario.setUsername(newUsername);
+                usuarioService.updateUser(id, usuario);
+                resp.setStatus(200);
+            } else {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                resp.getWriter().write("Usuario no encontrado");
+            }
+        } else {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write("Datos invalidos");
+        }
+    }
 }
+
+
 
