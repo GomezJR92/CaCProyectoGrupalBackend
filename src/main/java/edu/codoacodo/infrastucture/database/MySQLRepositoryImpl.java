@@ -62,5 +62,22 @@ public class MySQLRepositoryImpl implements IRepository {
         return null;
     }
 
-    
+    @Override
+    public void deleteUser(int id) {
+        String sql = "DELETE FROM users WHERE id = ?";
+
+        try {
+            PreparedStatement preparador = this.conexion.prepareStatement(sql);
+            preparador.setInt(1, id);
+
+            preparador.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
+
 }

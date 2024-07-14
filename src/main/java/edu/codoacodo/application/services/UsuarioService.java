@@ -19,5 +19,10 @@ public class UsuarioService implements IRepository {
         return repository.findByUsername(username);
     }
 
+    @Override
+    public void deleteUser(int id) {
+        repository.deleteUser(id);
+    }
+
 
 }
